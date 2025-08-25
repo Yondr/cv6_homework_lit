@@ -5,8 +5,22 @@ from matplotlib import pyplot as plt
 plt.rcParams["figure.figsize"] = [15, 10]
 
 
-# Load an image (you can freely chose any image you like)
+"""Simple script demonstrating basic colour channel operations in OpenCV.
+
+The original version assumed that the input image always exists and attempted
+to convert it to the RGB colour space without verifying that the image was
+loaded correctly.  When the file is missing ``cv2.imread`` returns ``None`` and
+``cv2.cvtColor`` raises an unclear ``OpenCV`` assertion error.
+
+We now check that the file was read successfully and raise a descriptive
+``FileNotFoundError`` if not.  This makes the script fail fast with a helpful
+message instead of an obscure exception.
+"""
+
+# Load an image (you can freely choose any image you like)
 img = cv2.imread("img/test.jpg")
+if img is None:
+    raise FileNotFoundError("Image 'img/test.jpg' not found")
 # Convert it to RGB
 img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 # Plot it
@@ -34,12 +48,14 @@ out = np.vstack([out1, out2])
 
 # Plot the collage
 plt.imshow(out)
+plt.axis("off")
 plt.show()
-plt.axis(False)
 
 
 # Load an image (you can freely chose any image you like)
 img = cv2.imread("img/test.jpg")
+if img is None:
+    raise FileNotFoundError("Image 'img/test.jpg' not found")
 # Convert it to RGB
 
 img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
