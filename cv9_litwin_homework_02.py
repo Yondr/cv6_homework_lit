@@ -2,14 +2,15 @@ import numpy as np
 import cv2
 from matplotlib import pyplot as plt
 
+
+###### WHITE PATCH
+
 img_bgr = cv2.imread("img/test2.png")
 img = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2RGB).astype(np.float32)
 
 row, col = 350, 400
-half = 5  # окно 11x11
+half = 5  #  11x11
 patch = img[max(0,row-half):row+half+1, max(0,col-half):col+half+1, :]
-
-
 
 mask = np.all(patch < 250, axis=2)
 patch_valid = patch[mask]
@@ -32,7 +33,7 @@ plt.subplot(1,2,1); plt.imshow(img.astype(np.uint8)); plt.title("Original"); plt
 plt.subplot(1,2,2); plt.imshow(balanced); plt.title("White patch"); plt.axis("off")
 plt.show()
 
-######
+###### GRAY WORLD
 
 # Load your image
 img = cv2.imread('img/test2.png')
@@ -67,4 +68,22 @@ plt.subplot(1,2,1); plt.imshow(img.astype(np.uint8)); plt.title("Original"); plt
 plt.subplot(1,2,2); plt.imshow(balanced); plt.title("Grayworld"); plt.axis("off")
 plt.show()
 
+###### SCALE BY MAX
 
+# Load your image
+img = cv2.imread('img/test2.png')
+img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+
+# Compute the maximum values for all three colour channels (red, green, blue)
+max_vals = img.reshape(-1,3).max(axis=0)
+coeffs = 255.0 / max_vals
+
+
+# Apply scale-by-max balancing and generate the balanced image
+balanced = img * coeffs
+balanced = np.clip(balanced, 0, 255).astype(np.uint8)
+
+plt.figure(figsize=(12,5))
+plt.subplot(1,2,1); plt.imshow(img.astype(np.uint8)); plt.title("Original"); plt.axis("off")
+plt.subplot(1,2,2); plt.imshow(balanced); plt.title("Scale By Max"); plt.axis("off")
+plt.show()
