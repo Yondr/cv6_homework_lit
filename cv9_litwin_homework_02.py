@@ -5,20 +5,21 @@ from matplotlib import pyplot as plt
 img_bgr = cv2.imread("img/test2.png")
 img = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2RGB).astype(np.float32)
 
-    row, col = 350,400  # координаты белого пятна
-    half = 5  # окно 11x11
-    patch = img[max(0,row-half):row+half+1, max(0,col-half):col+half+1, :]
+row, col = 350, 400
+half = 5  # окно 11x11
+patch = img[max(0,row-half):row+half+1, max(0,col-half):col+half+1, :]
 
 
-    mask = np.all(patch < 250, axis=2)
-    patch_valid = patch[mask]
-    if patch_valid.size == 0:
-        patch_valid = patch.reshape(-1,3)
 
-    white = patch_valid.reshape(-1,3).mean(axis=0)
+mask = np.all(patch < 250, axis=2)
+patch_valid = patch[mask]
+if patch_valid.size == 0:
+    patch_valid = patch.reshape(-1,3)
 
-    eps = 1e-6
-    coeffs = 255.0 / np.maximum(white, eps)
+white = patch_valid.reshape(-1,3).mean(axis=0)
+
+eps = 1e-6
+coeffs = 255.0 / np.maximum(white, eps)
 
 balanced = img.copy()
 for c in range(3):
@@ -65,3 +66,5 @@ plt.figure(figsize=(12,5))
 plt.subplot(1,2,1); plt.imshow(img.astype(np.uint8)); plt.title("Original"); plt.axis("off")
 plt.subplot(1,2,2); plt.imshow(balanced); plt.title("Grayworld"); plt.axis("off")
 plt.show()
+
+
