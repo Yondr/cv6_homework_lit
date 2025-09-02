@@ -1,0 +1,7 @@
+pandas
+numpy
+scikit-learn
+matplotlib
+seaborn
+tensorflow            # або tensorflow-cpu, якщо без GPU
+torch                 # або інсталяція з офіційного індексу для CUDA
